@@ -1,17 +1,14 @@
 package com.dahun.androidcleanarchitecturetemplate.presentation.ui
 
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
-import com.dahun.androidcleanarchitecturetemplate.presentation.R
 import com.dahun.androidcleanarchitecturetemplate.presentation.core.BaseActivity
 import com.dahun.androidcleanarchitecturetemplate.presentation.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : BaseActivity() {
-
-    private lateinit var binding: ActivityMainBinding
+@AndroidEntryPoint
+class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     }
 }

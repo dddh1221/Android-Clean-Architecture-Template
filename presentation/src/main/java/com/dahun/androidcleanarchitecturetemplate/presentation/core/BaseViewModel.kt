@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dahun.androidcleanarchitecturetemplate.domain.core.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 abstract class BaseViewModel: ViewModel() {
 
