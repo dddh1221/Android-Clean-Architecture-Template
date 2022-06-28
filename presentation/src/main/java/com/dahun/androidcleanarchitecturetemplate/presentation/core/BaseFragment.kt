@@ -1,7 +1,9 @@
 package com.dahun.androidcleanarchitecturetemplate.presentation.core
 
 import androidx.fragment.app.Fragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 abstract class BaseFragment: Fragment() {
 
     val baseActivity: BaseActivity? by lazy {
@@ -12,5 +14,4 @@ abstract class BaseFragment: Fragment() {
     }
 
     protected fun getVersionName(): String = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0).versionName
-
 }
