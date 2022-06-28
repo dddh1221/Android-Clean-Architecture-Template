@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import dagger.hilt.android.AndroidEntryPoint
 
-typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
+typealias FragmentInflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
 abstract class BaseFragment<VB: ViewDataBinding>(
-    private val inflate: Inflate<VB>
+    private val inflate: FragmentInflate<VB>
 ): Fragment() {
 
     private lateinit var _binding: VB
