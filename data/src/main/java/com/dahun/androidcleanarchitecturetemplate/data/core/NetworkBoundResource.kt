@@ -1,7 +1,7 @@
 package com.dahun.androidcleanarchitecturetemplate.data.core
 
 import com.dahun.androidcleanarchitecturetemplate.domain.core.DispatcherProvider
-import com.dahun.androidcleanarchitecturetemplate.domain.core.Resource
+import com.dahun.androidcleanarchitecturetemplate.domain.core.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -11,38 +11,38 @@ abstract class NetworkBoundResource<Db, Network>(
     private val dispatcherProvider: DispatcherProvider
 ) {
 
-    private val result = MutableStateFlow<Resource<Db>>(Resource.Loading())
-    fun asFlow(): Flow<Resource<Db>> = result.asStateFlow()
+    private val result = MutableStateFlow<Result<Db>>(Result.Loading())
+    fun asFlow(): Flow<Result<Db>> = result.asStateFlow()
 
     init {
-        setValue(Resource.Loading())
+        setValue(Result.Loading())
 
         CoroutineScope(dispatcherProvider.io).launch {
             try {
                 val dbSource = loadFromDb()
                 dbSource.catch {
-                    setValue(Resource.Error(message = "Error!"))
+                    setValue(Result.Error(message = "Error!"))
                 }.collect { data ->
                     if(data == null || shouldFetch(data)) {
                         fetchFromNetwork(data)
                     } else {
-                        setValue(Resource.Success(data))
+                        setValue(Result.Success(data))
                     }
                 }
             } catch (e: Exception) {
-                setValue(Resource.Error(message = e.message ?: ""))
+                setValue(Result.Error(message = e.message ?: ""))
             }
         }
     }
 
-    private fun setValue(newValue: Resource<Db>) {
+    private fun setValue(newValue: Result<Db>) {
         if(result.value != newValue) {
             result.value = newValue
         }
     }
 
     private suspend fun fetchFromNetwork(originData: Db?) {
-        setValue(Resource.Loading())
+        setValue(Result.Loading())
 
         when(val apiResponse = createCall()) {
             is ApiSuccessResponse<Network> -> {
@@ -50,11 +50,11 @@ abstract class NetworkBoundResource<Db, Network>(
             }
 
             is ApiEmptyResponse<Network> -> {
-                setValue(Resource.Error(-1, "Empty Data"))
+                setValue(Result.Error(-1, "Empty Data"))
             }
 
             is ApiErrorResponse<Network> -> {
-                setValue(Resource.Error(apiResponse.code, apiResponse.errorMessage))
+                setValue(Result.Error(apiResponse.code, apiResponse.errorMessage))
             }
         }
     }

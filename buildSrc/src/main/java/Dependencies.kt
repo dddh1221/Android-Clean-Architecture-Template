@@ -140,6 +140,14 @@ object Dependencies {
         private const val ANDROID_JUNIT = "androidx.test.ext:junit:${Versions.ANDROID_JUNIT}"
     }
 
+    object Desugaring: Libs {
+        override fun getDependencies(): List<DependencyType> = listOf(
+            DependencyType.CoreLibraryDesugaring(DESUGARING)
+        )
+
+        private const val DESUGARING = "com.android.tools:desugar_jdk_libs:${Versions.DESUGARING}"
+    }
+
     object Espresso: Libs {
         override fun getDependencies(): List<DependencyType> = listOf(
             DependencyType.AndroidTestImplementation(ESPRESSO)

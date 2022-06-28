@@ -4,7 +4,6 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
-    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -20,16 +19,30 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+        create("inhouse") {
+            initWith(getByName("release"))
+        }
+    }
+    flavorDimensions += "server"
+    productFlavors {
+        register("prod") {
+            dimension = "server"
+        }
+
+        register("dev") {
+            dimension = "server"
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -39,4 +52,5 @@ android {
 dependencies {
     implementationLibs(Dependencies.Coroutine)
     implementationLibs(Dependencies.JetPack.Hilt)
+    implementationLibs(Dependencies.Desugaring)
 }

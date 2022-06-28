@@ -20,11 +20,24 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        create("inhouse") {
+            initWith(getByName("release"))
+        }
+    }
+    flavorDimensions += "server"
+    productFlavors {
+        register("prod") {
+            dimension = "server"
+        }
+
+        register("dev") {
+            dimension = "server"
         }
     }
     buildFeatures {

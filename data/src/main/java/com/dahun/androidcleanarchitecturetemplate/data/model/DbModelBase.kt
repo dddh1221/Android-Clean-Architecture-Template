@@ -1,5 +1,5 @@
 package com.dahun.androidcleanarchitecturetemplate.data.model
 
-abstract class ExampleDbModelBase(
+abstract class DbModelBase(
     open val updateTime: Long? = System.currentTimeMillis()
 )

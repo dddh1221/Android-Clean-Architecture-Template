@@ -27,6 +27,9 @@ object Versions {
     const val RETROFIT = "2.8.1"
     const val OKHTTP = "4.4.0"
 
+    // Desugaring
+    const val DESUGARING = "1.1.5"
+
     // Test
     const val JUNIT = "4.13.2"
     const val ANDROID_JUNIT = "1.1.3"

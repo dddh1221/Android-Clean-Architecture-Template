@@ -1,12 +1,10 @@
 package com.dahun.androidcleanarchitecturetemplate.data.core
 
-import com.dahun.androidcleanarchitecturetemplate.data.model.ExampleNetworkModelBase
-import com.google.gson.Gson
 import retrofit2.Response
 
 sealed class ApiResponse<T> {
     companion object {
-        suspend fun <T> create(requestFunc: suspend () -> Response<ExampleNetworkModelBase<T>>): ApiResponse<T> {
+        suspend fun <T> create(requestFunc: suspend () -> Response<T>): ApiResponse<T> {
             return try {
                 val response = requestFunc.invoke()
                 if (response.isSuccessful) {
@@ -14,14 +12,14 @@ sealed class ApiResponse<T> {
                     if (body == null || response.code() == 204) {
                         ApiEmptyResponse()
                     } else {
-                        ApiSuccessResponse(body = body.data)
+                        ApiSuccessResponse(body = body)
                     }
                 } else {
                     val msg = response.errorBody()?.string()
                     val errorMsg = if(msg.isNullOrEmpty()) {
                         response.message()
                     } else {
-                        Gson().fromJson(msg, ExampleNetworkModelBase::class.java).result.message
+                        msg
                     }
 
                     ApiErrorResponse(errorMessage = errorMsg ?: "Unknown Error", code = response.code())
